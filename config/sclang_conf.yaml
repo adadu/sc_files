@@ -1,0 +1,15 @@
+includePaths:
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/crucial-library
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/FileLog
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/Hilbert
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/Modality-toolkit
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/MathLib
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/atk-sc3
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/ListeningClocks
+    -   /Users/draft/git/mesh_utopia
+    -   /Users/draft/Library/Application Support/SuperCollider/downloaded-quarks/Utopia
+    -   /Library/Application Support/SuperCollider/Extensions
+    -   /Users/draft/Library/Application Support/SuperCollider/Extensions
+excludePaths:
+    []
+postInlineWarnings: false

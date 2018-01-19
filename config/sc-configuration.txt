@@ -1,0 +1,34 @@
+necessary extensions for supercollider:
+Extensions
+Modality-toolkit
+Utopia
+crucial-library
+mesh_utopia
+
+MAC
+delete these files before rebuild
+/Library/Application\ Support/SuperCollider
+/Applications/SuperCollider
+/Users/draft/Library/Application\ Support/SuperCollider
+
+PI
+/usr/local/share/SuperCollider
+/usr/bin
+/usr/share
+
+https://raspberrypi.stackexchange.com/questions/9034/how-to-change-the-default-governor#9048
+change governer
+create root pw if you haven't already
+login w user
+su - root
+enter pw
+cd /sys/devices/system/cpu
+cat cpu0/cpufreq/scaling_governor
+
+echo performance > cpu0/cpufreq/scaling_governor
+
+disable Raspbian init script (to avoid changing back to ondemand at reboot)
+systemctl disable raspi-config
+
+
+cmake -DSC_PATH=../../SuperCollider ..

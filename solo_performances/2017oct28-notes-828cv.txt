@@ -1,0 +1,34 @@
+calibration
+
+828mk1		-V		0V tests (3) on reboot = avg V			+V		V range		avg +V range/10
+				(these offsets don't work for es3)
+ch1(0sc)	-2.689		-0.003, -0.004, -0.003 = -0.003		2.680		5.369
+ch2(1sc)	-2.676		-0.002, 0.001, -0.001 = -0.001			2.671		5.347
+ch3(2sc)	-2.693		-0.016, -0.015, -0.015	= -0.015		2.659		5.349		
+ch4(3sc)	-2.693		0.007, 0.006, 0.008 = 0.006			2.702		5.395
+ch5(4sc)	-2.681		-0.001, 0.001, 0.003 = 0.001			2.679		5.360
+ch6(5sc)	-2.705		-0.001, -0.001, -0.001 = -0.001		2.700		5.405
+ch7(6sc)	-2.676		0.005, 0.008, 0.006 = 0.006			2.673		5.349
+ch8(7sc)	-2.697		-0.008, -0.009, -0.008 = -0.008		2.672		5.369
+es3 (8sc & 9sc spdif)
+ch9(10sc)	-10.25		0.008, 0.009, 0.009 = 0.009			10.26		20.51		
+ch10(11sc)	-10.31		-0.009, -0.010, -0.009 = -0.009		10.29		20.6		
+ch11(12sc)	-10.19		0.044, 0.043, 0.043 = 0.043			10.28		20.47
+ch12(13sc)	-10.31		0.008, 0.007, 0.008 = 0.008			10.33		20.64
+ch13(14sc)	-10.39		0.005, 0.005, 0.003 = 0.005			10.41		20.8
+ch14(15sc)	-10.25		0.004, 0.004, 0.004 = 0.004			10.26		20.51
+ch15(16sc)	-10.31		0.005, 0.005, 0.006 = 0.005			10.32		20.63
+ch16(17sc)	-10.27		0.024, 0.024, 0.025 = 0.024			10.32		20.59
+
+
+
+notes
+8 outputs only, main 1/2 are duplicate outs
+828 out at module 8/9 not active
+to access full 5v at out, each hardware in must be offset by +2.6V, sc offset synth needs to continuously run, and sc amp out should be set to 2.6 (or 2?). adjust hardware to +2.5V, -1 is 0V, +1 is 5V.
+
+Does it make sense to include all functions in the synth def - pitch, envelope, virtual ac modulator , auxes OR find a way to systematize modularity, which may mean calling up the synth def and enabling only the components needed for that particular voice to take into account computer efficiency.
+
+Try adding a modulating voltage to the TIME REVERSAL Input, "TRM" or
+Time Reversal Modulation can result in some surprising vocal like tones!
+
