@@ -492,4 +492,98 @@ SynthDef(\randomChaos,
 }).add;
 */
 
+/*
+mod1
+Modular synth control over ADAT
+taken from 2017mar17
+
+//q106 osc 1
+~two3 = Pmono(
+	\dc,
+	\ch, 2,
+	\ampCh, 3,
+	\auxCh, 8,
+	\trig, Pdefn(\two3trig, 1),
+	\deg, Pdefn(\two3deg, 12),
+	\midiCvOff, Pdefn(\two3mCO, -84),
+	\note,  Pdefn(\two3note),
+	\octave, Pdefn(\two3octave),
+	\dur, Pdefn(\two3dur),
+	\port, Pdefn(\two3port),
+	\legato, Pdefn(\two3legato),
+	\amp, Pdefn(\two3amp),
+	\att, Pdefn(\two3att),
+	\aux, Pdefn(\two3aux),
+	\aatt, Pdefn(\two3aatt),
+	\dur2, Pdefn(\two3dur2),
+	\calibration, Pdefn(\two3cal),
+	\offset, Pdefn(\two3offset),
+);
+)
+
+*/
+SynthDef(\dc, { | note, octave = 0, deg = 12, midiCvOff  = -84, t_trig = 1, ch = nil, port = 0, calibration = 0.2202, offset = 0, amp = 0.01, ampCh = nil, aux = 0.0001, auxCh = nil, att = 0.01, aatt =0.01, dur = 0.1, dur2 = 0.1 |
+	var env = Env([0.001, 0.99, 0.001], [att, 1.0-att], [\lin, \lin]);
+	var envGen = EnvGen.kr(env, t_trig, timeScale: dur);
+	var auxEnv = Env([0.001, 0.99, 0.001], [aatt, 1.0-aatt], [\exp, \exp]);
+	var auxEnvGen = EnvGen.kr(auxEnv, t_trig, timeScale: dur2);
+	note = note;
+	note = note + (octave * deg) + midiCvOff;
+	note = (note / deg) * calibration + offset;
+	//note = note + octave;
+	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
+	Out.ar(ampCh, K2A.ar(Lag.kr(amp * envGen)));
+	Out.ar(auxCh, K2A.ar(Lag.kr(aux * auxEnvGen)));
+}).add;
+
+
+/*
+mod2
+Another form of Modular synth control over ADAT
+taken from 2017oct28
+
+//q106 osc 1
+~v3 = Pmono(
+	\zero,
+	\ch, 13,
+	\ampCh, 5,
+	\trig, 1,
+	\note, Pdefn(\v3note, 60),
+	\octave, Pdefn(\v3oct, 0),
+	\dur, Pdefn(\v3dur, 1),
+	\port, Pdefn(\v3port, 0),
+	\att, Pdefn(\v3att, 0.001),
+	\amp, Pdefn(\v3amp, 1),
+	\calibration, Pdefn(\v3cal, 0.0976),
+	\midiTune, Pdefn(\v3mt, -23.64),
+	\spo, Pdefn(\v3spo, 12),
+	\stretch, Pdefn(\v3stretch, 1.0),
+);
+*/
+SynthDef(\zero, { | note, octave = 0, spo = 12, t_trig, ch = nil, port = 0, calibration = 0.1, midiTune = 0, amp = 1,
+	ampCh = nil, att = 0.001, dur = 1 |
+	var level = amp;
+	var env = Env([0.001, 0.999, 0.001], [att, 1.0-att], [\lin, \lin]);
+	var envGen = EnvGen.kr(env, t_trig, level, timeScale: dur);
+	note = note;
+	note = note + (octave * spo) + midiTune;
+	note = (note / spo) * calibration;
+	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
+	Out.ar(ampCh, K2A.ar(Lag.kr(envGen)));
+}).add;
+
+//first mid 2019jun13, better
+//specify env asr, but relation to dur is not solved yet
+SynthDef(\dcev, { | note, octave = 0, spo = 12, t_trig, atk=0, sus=0, rel=3, ch = nil, port = 0, calibration = 0.1, midiTune = 0, amp = 1,
+	ampCh = nil, att = 0.001, dur = 1 |
+	var level = amp;
+	var env = Env([0, 1, 1, 0], [atk, sus, rel], [\lin, \lin, \lin]);
+	var envGen = EnvGen.kr(env, t_trig, level, timeScale: dur);
+	note = note;
+	note = note + (octave * spo) + midiTune;
+	note = (note / spo) * calibration;
+	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
+	Out.ar(ampCh, K2A.ar(Lag.kr(envGen)));
+}).add;
+
 )
