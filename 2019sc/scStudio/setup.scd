@@ -67,7 +67,8 @@ Task({
 			Buffer.read(s,sf.fullPath);
 		});
 	)});
-	("synthdefs.scd").loadRelative;
+	// UNCOMMENT THIS FOR ANYTHING BUT CORM
+	// ("synthdefs.scd").loadRelative;
 	//loads snippets from setup folder
 	//("Snippets.scd").loadRelative;
 	3.wait;

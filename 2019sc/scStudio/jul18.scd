@@ -141,3 +141,7 @@ in = LPF.ar(Mix.new(SoundIn.ar(6)), 2000); amp = Amplitude.kr(in, 0.25, 0.25);
 )
 
 {WalshHadamard.ar(SoundIn.ar(6), MouseX.kr(0,64))}.play
+
+{var n= 1024; WaveletDaub.ar(SoundIn.ar(6), n, MouseX.kr(2,n))}.play
+
+
