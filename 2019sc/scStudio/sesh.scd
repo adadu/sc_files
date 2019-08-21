@@ -1,4 +1,4 @@
-//Load setup file to get examples working
+ //Load setup file to get examples working
 ("setup.scd").loadRelative;
 
 l = Prand([2,9,8],inf);
