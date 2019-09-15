@@ -36,21 +36,20 @@ Task({
 
 //("setup.scd").loadRelative;
 
+
 // OSC Communication
 (
-x = {
+~mfcc = {
     var in, fft, array;
     //in = PlayBuf.ar(1, d, BufRateScale.kr(d), 1, 0, 1);
-	in = SoundIn.ar(6);
+	in = SoundIn.ar(0);
     fft = FFT(LocalBuf(1024), in);
     array = MFCC.kr(fft);
     Out.kr(0, array); // control bus out
     Out.ar(0, Pan2.ar(in)); // audio bus out
-}.play
-)
+};
 
-(
-c = Bus(\control, 0, 13); // create control bus
+~mfccBus = Bus(\control, 0, 13); // create control bus
 )
 
 (
@@ -66,11 +65,11 @@ w.front;
 //set up the sender
 sender = NetAddr.new("127.0.0.1", 6448);
 // function to run display and send values to wekinator
-r = {
+~mfccDisplay = {
     inf.do {
-		c.getn(13, { |val| { ms.value_(val * 0.9) }.defer });
-		t = c.getnSynchronous(13);
-		sender.sendMsg("/wek/inputs", *t); //send bus value
+		~mfccBus.getn(13, { |val| { ms.value_(val * 0.9) }.defer });
+		~mfccOsc = ~mfccBus.getnSynchronous(13);
+		sender.sendMsg("/wek/inputs", *~mfccOsc); //send bus value
         0.04.wait; //25 frames per second 0.04
     }
 }.fork

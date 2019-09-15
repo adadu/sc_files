@@ -28,7 +28,7 @@ p.clock.tempo = 30/60;
 
 
 
-s.record(duration: 20);
+s.record(duration: 5);
 s.stopRecording;
 
 //modular control test

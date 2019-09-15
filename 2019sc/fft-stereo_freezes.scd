@@ -4,15 +4,17 @@ s.boot;
 //FFT buffer
 // /Users/draft/git/sounds/sounds-test/iBelieveICanFly441k.wav
 c = Buffer.read(s,"./Users/draft/git/samples/sounds-test/iBelieveICanFly441k.wav");
+c.free
 
 // OK, this is the sickest UGEN, can i get it to do a live thing?
 (
 var in, sf;
 //in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-in = RecordBuf.ar([6], bufnum: 0, offset: 0.0, recLevel: 1.0, preLevel: 0.0, run: 1.0, loop: 1.0, trigger: 1.0, doneAction: 0); //SoundIn.ar(6);
+in = RecordBuf.ar([0], bufnum: 0, offset: 0.0, recLevel: 1.0, preLevel: 0.0, run: 1.0, loop: 1.0, trigger: 1.0, doneAction: 0); //SoundIn.ar(6);
 f = 1024;
 h = 0.25;
-y = Buffer.alloc(s, 44100 * 4.0, 1); // a four second 1 channel Buffer // in.duration.calcPVRecSize(f, h));
+y = in.duration.calcPVRecSize(f, h);
+Buffer.alloc(s, 44100 * 4.0, 1); // a four second 1 channel Buffer
 z = Buffer.read(s, y);
 )
 
@@ -21,10 +23,10 @@ z = Buffer.read(s, y);
 q = {
 	arg out=0, recBuf=1;
     var in, chain, bufnum, playbuf, playbuf2;
-	in = SoundIn.ar(6);
+	in = SoundIn.ar(0);
 	chain = FFT({ LocalBuf.new(1024) }, in);
-	/*playbuf = PlayBuf.ar(1, in, BufRateScale.kr(in), loop: 1);
-	playbuf2 = playbuf;*/
+	playbuf = PlayBuf.ar(1, in, BufRateScale.kr(in), loop: 1);
+	playbuf2 = playbuf;
 	chain = PV_BufRd(chain, playbuf2, MouseX.kr(0.0, 1.0));
 	Out.ar(out, IFFT(chain, 1).dup);
 }.play;
@@ -34,17 +36,18 @@ q.free
 
 //test spectral enhance
 (
-SynthDef(\specEnhance, { arg ratio = 2, out;
+SynthDef(\specEnhance, { arg numPart = 2, ratio = 2, out;
     var in, chain;
-	in = SoundIn.ar(6); //WhiteNoise.ar(0.1).dup;
+	in = SoundIn.ar(0); //WhiteNoise.ar(0.1).dup;
     chain = FFT({LocalBuf(2048, 1)}, in);
-    chain = PV_SpectralEnhance(chain, 2, ratio, MouseX.kr(0, 0.99));
+    chain = PV_SpectralEnhance(chain, numPart, ratio, MouseX.kr(0, 0.99));
     Out.ar(out, IFFT(chain).dup) // inverse FFT
 }).add;
 )
 
 a = Synth(\specEnhance);
-a.set(\ratio, 2.5);
+a.set(\ratio, 8);
+a.set(\numPart, 4);
 a.free
 
 
@@ -52,37 +55,43 @@ a.free
 
 // sound input: use headphones to prevent feedback
 (
-SynthDef("conformer1", { |out|
+SynthDef("conformer1", { arg out;
     var in, chain;
-    in = SoundIn.ar(6);
+    in = SoundIn.ar(0);
     chain = FFT(LocalBuf(1024), in);
-    chain = PV_ConformalMap(chain, MouseX.kr(-1.0,1.0), MouseY.kr(-1.0,1.0));
+    chain = PV_ConformalMap(chain, MouseX.kr(-1.0,1.0).postln, MouseY.kr(-3.0,3.0).postln);
     Out.ar(out, Pan2.ar(IFFT(chain), 0));
 }).add;
 )
 
-d= Synth("conformer1")
-d.free
+d= Synth("conformer1");
+d.free;
 
 
-
+/////   ???? ???? /////////
+Buffer.alloc(s, 44100 * 8.0, 1);
+c = Buffer.read(s,"./Users/draft/git/samples/sounds-test/iBelieveICanFly441k.wav");
+c.free
 (
-{
-
-    var in, fft;
-
-	in = SoundIn.ar(6); // PlayBuf.ar(1, d, BufRateScale.kr(d), 1, 0, 1);
-    fft = FFT(LocalBuf(1024, 1), in, wintype:1);
-    TPV.ar(fft, 1024, 512, 200,100, MouseX.kr(0.0,1.0), 1, 0.2).dup
-
-}.play
+SynthDef(\tvp1, { arg out;
+    var in, chain;
+	in = SoundIn.ar(0); // PlayBuf.ar(1, d, BufRateScale.kr(d), 1, 0, 1);
+	chain = FFT({LocalBuf(1024,1)}, in);
+	chain = TPV.ar(chain, 1024, 512, 200,100, MouseX.kr(0.0,1.0), 1, 0.2);
+	Out.ar(out, IFFT(chain));
+}).add;
 )
+d= Synth(\tvp1);
+d.free;
+
+
+
 
 Buffer.alloc(s, 44100 * 4.0, 1);
 (
 SynthDef(\maxmag, {arg fftbuf;
     var in, chain, out;
-    in = SoundIn.ar(6);
+    in = SoundIn.ar(0);
     chain = FFT(fftbuf, in);
     // let the strongest (0 - 1023) partials through
     chain = PV_MaxMagN(chain, MouseX.kr(0,1023));
@@ -90,6 +99,10 @@ SynthDef(\maxmag, {arg fftbuf;
     Out.ar(0, out);
 }).add;
 )
+
+e = Synth(\maxmag);
+e.free
+
 // the fft buf
 s.sendMsg(\b_alloc, 0, 2048);
 // start the synth
@@ -110,27 +123,44 @@ s.freeAllBuffers
 q = {
     var in, chain;
 	//in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-    in = SoundIn.ar(6);
-	chain = FFT({ LocalBuf(64) } !2, in);
-	chain = PV_MagFreeze(chain, SinOsc.kr(LFNoise0.kr([4, 5])));
+    in = SoundIn.ar(0);
+	chain = FFT({ LocalBuf(1024) } !2, in);
+	chain = PV_MagFreeze(chain, LFNoise0.kr(LFNoise0.kr(2).exprange(2,10), 0.5));
     IFFT(chain) // inverse FFT
 }.play;
+
+
+s.record(duration: 15);
+s.stopRecording;
 
 )
 q.free
 
-(
-u = {
-    var in, chain, bufnum;
-	//in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-    //in = SoundIn.ar(6);
-	bufnum = LocalBuf.new(1024);
-	chain = PV_BufRd(c, 1, MouseX.kr(0.0,1.0));
-    IFFT(chain) // inverse FFT
-}.play;
+Buffer.alloc(s, 44100 * 4.0, 1);
 
+// ????????
+(
+SynthDef(\bufrd, {arg recBuf=1, soundBufnum=2, out;
+    var in, chain, bufnum;
+    in = SoundIn.ar(0);
+	//in = PlayBuf.ar(1, soundBufnum, BufRateScale.kr(soundBufnum), loop: 0);
+	b = Buffer.alloc(s, 44100 * 4.0, 1);
+	//chain = FFT({LocalBuf(1024, 1)}.dup, in);
+	chain = FFT({ LocalBuf(1024, 1, 0.25, 1) }.dup, in);
+	chain = PV_RecordBuf(chain, recBuf, 0, 1, 0, 0.25, 1);
+	chain = PV_BufRd(chain, 1, MouseX.kr(0.0,1.0));
+    out = IFFT(chain);// inverse FFT
+	Out.ar(0, out);
+}).add;
 )
-u.free
+d= Synth(\bufrd);
+d.free;
+// the fft buf
+s.sendMsg(\b_alloc, 0, 2048);
+s.sendMsg(\s_new, \bufrd, z = s.nextNodeID, 0, 1, \fftbuf, 0);
+s.sendMsg(\n_free, z);
+s.sendMsg(\b_free, 0);
+
 
 
 
@@ -138,7 +168,7 @@ u.free
 r = {
     var in, chain, mV, newIn, chain2;
 	//in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-    in = SoundIn.ar(6);
+    in = SoundIn.ar(0);
 	chain = FFT(LocalBuf(256), in);
 	mV= MouseX.kr(-1,1.0);
 	chain = PV_BrickWall(chain, mV);
@@ -154,15 +184,18 @@ r.free
 (
 SynthDef(\fftgrain, { |out, sustain = 1, rate = 0.2|
     var in, chain;
-	in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-    //in = SoundIn.ar(6); //WhiteNoise.ar(0.1).dup;
-    chain = FFT({LocalBuf(128, 1)}.dup, in);
+	in = SoundIn.ar(0); //WhiteNoise.ar(0.1).dup;
+	b = Buffer.alloc(s, 44100 * 4.0, 1);
+    chain = FFT({LocalBuf(1024, 1)}.dup, in);
     chain = PV_BrickWall(chain,
         SinOsc.kr(rate * XLine.kr(1, 15 * [1, 1.6], sustain), Rand(0, pi))
     );
-    Out.ar(out, IFFT(chain) * XLine.kr(1, 0.001, sustain, doneAction: Done.freeSelf)) // inverse FFT
+    Out.ar(out, IFFT(chain) * XLine.kr(1, 0.001, sustain)) // inverse FFT
 }).add;
 )
+
+v = Synth(\fftgrain);
+v.free;
 
 (
 Pbind(
@@ -174,8 +207,9 @@ Pbind(
 )
 
 ( {
-var in, chain, v;
-in = SoundIn.ar(6);
+var in, chain, b;
+in = SoundIn.ar(0);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
 chain = FFT(LocalBuf(1024), in);
 chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
 if((index-LFPar.kr(0.1).range(2, b.numFrames/20)).abs < 10, mag, 0); // swept bandpass
@@ -186,7 +220,7 @@ if((index-LFPar.kr(0.1).range(2, b.numFrames/20)).abs < 10, mag, 0); // swept ba
 
 ( {
 var in, chain, v;
-in = SoundIn.ar(6);
+in = SoundIn.ar(0);
 	chain = FFT(LocalBuf(1024), in);
 chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
         [mag.sqrt, pi.rand];
@@ -196,9 +230,11 @@ chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
 )
 
 ( {
-var in, chain, v;
-in = SoundIn.ar(6); chain = FFT(LocalBuf(1024), in);
-chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
+var in, chain;
+in = SoundIn.ar(0);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+chain = FFT(LocalBuf(1024), in);
+chain = chain.pvcollect(c.numFrames, {|mag, phase, index|
         [mag, LFNoise0.kr.range(0, 3.14)];
 }, frombin: 0, tobin: 250, zeroothers: 1);
         Out.ar(0, 0.5 * IFFT(chain).dup);
@@ -207,22 +243,26 @@ chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
 
 ( {
 var in, chain, v;
-in = SoundIn.ar(6); chain = FFT(LocalBuf(1024), in);
+in = SoundIn.ar(0);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+//in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1); //SoundIn.ar(0);
+chain = FFT(LocalBuf(1024), in);
 chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
-        [mag * MouseX.kr(0.5, 2), phase / MouseY.kr(0.5, 30)]
+		[mag * MouseX.kr(0.5, 2), phase / MouseY.kr(0.5, 30)]
 }, frombin: 0, tobin: 250, zeroothers: 0);
-        Out.ar(0, 0.5 * IFFT(chain).dup);
+Out.ar(0, 0.5 * IFFT(chain).dup);
 }.play(s);
 )
 
 // spectral delay w math
 ( {
 var in, chain, v;
-in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-chain = FFT(LocalBuf(1024), in);
-v = MouseX.kr(0.1, 1);
+in = SoundIn.ar(0); //PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+chain = FFT(LocalBuf(512), in);
+v = MouseX.kr(0.01, 1);
 chain = chain.pvcollect(c.numFrames, {|mag, phase, index| mag + DelayN.kr(mag, 1, v);
-}, frombin: 0, tobin: 256, zeroothers: 1);
+}, frombin: 0, tobin: 128, zeroothers: 1);
 	Out.ar(0, 0.5 * IFFT(chain).dup);
 }.play(s);
 )
@@ -232,10 +272,12 @@ chain = chain.pvcollect(c.numFrames, {|mag, phase, index| mag + DelayN.kr(mag, 1
 // more delay math
 ( {
 var in, chain, v;
-in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1); chain = FFT(LocalBuf(1024), in);
+in = SoundIn.ar(0); //PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+chain = FFT(LocalBuf(1024), in);
 v = MouseX.kr(0.1, 2);
-chain = chain.pvcollect(c.numFrames, {|mag, phase, index|
-        mag + DelayN.kr(mag, 1, v*(index*256.reciprocal));
+chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
+		mag + DelayN.kr(mag, 1, v*(index*256.reciprocal));
 }, frombin: 0, tobin: 256, zeroothers: 0);
         Out.ar(0, 0.5 * IFFT(chain).dup);
 }.play(s);
@@ -245,24 +287,58 @@ chain = chain.pvcollect(c.numFrames, {|mag, phase, index|
 
 ( {
 var in, chain, v;
-in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1); chain = FFT(LocalBuf(1024), in);
-chain = chain.pvcollect(c.numFrames, {|mag, phase, index|
-        [mag, LFNoise0.kr.range(0, 3.14)];
+in = SoundIn.ar(0); //PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+	chain = FFT(LocalBuf(1024), in);
+chain = chain.pvcollect(b.numFrames, {|mag, phase, index|
+        [mag, LFNoise0.kr.range(0, 3000.14)];
 }, frombin: 0, tobin: 250, zeroothers: 1);
         Out.ar(0, 0.5 * IFFT(chain).dup);
 }.play(s);
 )
 
-//square mags, rando phase to pi
-( {
-var in, chain, v;
-in = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1); chain = FFT(LocalBuf(1024), in);
-chain = chain.pvcalc(c.numFrames, {|mag, phase, index|
-		[mag.sqrt.scramble, (phase * pi.rand).reverse];
-}, frombin: 2, tobin: 256, zeroothers: 1);
-        Out.ar(0, 0.5 * IFFT(chain).dup);
-}.play(s);
+(
+SynthDef(\gat, { var in, inputAmp, threshhold, gate;
+in = SoundIn.ar(0);
+inputAmp = Amplitude.kr(in);
+threshhold = 0.02;	// noise gating threshold
+gate = Lag.kr(inputAmp > threshhold, 0.01);
+}).add;
 )
+
+~v = {LFNoise0 .kr(RandSeed.kr(trig: 0.0, seed: 50)/*Dust.kr(0.5).asStream*/).asStream}; //{WhiteNoise.kr(600)}; // //{ Pexprand(0.1, 200, inf).asStream };//{Dwhite(0.1, 600,inf).asStream};//{LFNoise2.kr(10)};
+~v.play;
+~v.free;
+//square mags, rando phase to pi
+(
+SynthDef(\scraMag, { arg phaseMul;
+var in, chain, inputAmp, threshhold, gate;
+in = SoundIn.ar(0); //PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
+b = Buffer.alloc(s, 44100 * 4.0, 1);
+
+inputAmp = Amplitude.kr(in);
+threshhold = 0.02;	// noise gating threshold
+gate = Lag.kr(inputAmp > threshhold, 0.01);
+
+chain = FFT(LocalBuf(1024), in);
+chain = chain.pvcalc(b.numFrames, {|mag, phase, index|
+		[mag.scramble, (phase * phaseMul/*pi.rand*/)];
+}, frombin: 0, tobin: 128, zeroothers: 0);
+        Out.ar(0, 0.5 * IFFT(chain).dup * gate);
+}).add;
+)
+//~v.free;
+~scraMag = (\scraMag);
+~scraMag.set(\phaseMul, ~v);
+
+~scraMag.play;
+
+~scraMag.free;
+
+p.clear
+
+
+pi.rand.postln
 
 ( {
 var in, chain, v;
