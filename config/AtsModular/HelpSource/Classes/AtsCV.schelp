@@ -1,0 +1,82 @@
+title:: AtsCV
+summary:: Ats modular synthesizer spectral data
+categories:: UGens > Analysis:Synthesis
+related:: Classes/AtsCV, Classes/AtsCVBandPassNoise, Classes/AtsCVCascadingHiLoNoise, Classes/AtsCalibration
+
+DESCRIPTION:: Interface for modular synthesizer calibration. Must be used in tandem with a digital audio interface that can send dc-coupled outputs.
+
+AtsCV.init()
+
+*initSynths(aServer)
+
+*loadFIles(ats_file_path, calibration_file_path).play
+
+*convertData  - maps control voltage data to ats spectral data
+
+*create_buffers(aServer)  - creates a ~buffers variable that stores a list of control voltage buffer pairs for frequency and amplitude to be sent analog modular oscillators and amplifiers
+
+*resynthesizeBuffers(~buffers, busList)  - sends partial data to modules and resynthesize partials
+
+busList - list of associated freq and amp bus indexes
+
+busList format: [[module_1_freqbus, module_1_ampbus],[module_2_freqbus, module_2_ampbus], ...]
+
+EXAMPLES::
+
+code::
+/*
+Example loading Expert Sleepers ES-8
+*/
+
+(
+//Define the number of inputs and outputs for the ES-8
+o = Server.local.options;
+​o.numOutputBusChannels = 8; // The next time it boots, this will take effect
+​o.numInputBusChannels = 4;
+)
+
+(
+//load the ES-8 Device
+o.device = "ES-8";
+)
+
+(
+//set memory size and boot server
+Server.local.options.memSize = 512*1024;
+Server.internal.options.memSize = 512*1024;
+s.boot;
+)
+
+c=nil;
+c = AtsCV.init;
+c.initSynths(s);
+c.loadFiles("/Users/crt.ats", "/Users/Desktop/CV_List_Sun Apr  3 23:47:41 2016.sc").play;
+c.convertData;
+c.create_buffers(s);
+~buffers.postcs;
+
+//create a silent default state for the amplitude buses so that we can hear the amplitude control voltage
+
+(
+SynthDef(\help_PlayBuf_amp, {| out = 0, bufnum = 0 |
+
+	//amp output bus
+	Out.ar(out,
+	K2A.ar(0.99.neg)
+	);
+}).play(s, [\out, 2]);
+)
+
+(
+SynthDef(\help_PlayBuf_amp, {| out = 0, bufnum = 0 |
+	//amp output bus
+	Out.ar(out,
+	K2A.ar(0.99.neg)
+	);
+}).play(s, [\out, 3]);
+)
+
+//Resynthesize partials
+c.resynthesizeBuffers(~buffers, [[0,2],[1,3]]);
+
+::

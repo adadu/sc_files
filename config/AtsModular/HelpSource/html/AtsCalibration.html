@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1561.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 21.0px; font: 13.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 21.0px; font: 18.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #bf0000; -webkit-text-stroke: #bf0000}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #000000; -webkit-text-stroke: #000000}
+    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #0000bf; -webkit-text-stroke: #0000bf}
+    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #bf0000; -webkit-text-stroke: #bf0000}
+    span.s1 {font: 18.0px Helvetica; font-kerning: none; color: #0000bf; -webkit-text-stroke: 0px #0000bf}
+    span.s2 {font: 18.0px Helvetica; font-kerning: none}
+    span.s3 {font-kerning: none}
+    span.s4 {font-kerning: none; color: #0000bf; -webkit-text-stroke: 0px #0000bf}
+    span.s5 {font-kerning: none; color: #000000}
+    span.s6 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s7 {font-kerning: none; color: #606060; -webkit-text-stroke: 0px #606060}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AtsCalibration</b></span><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><span class="s3"><b>modular synthesizer calibration</b></span></p>
+<p class="p2"><span class="s3"><br>
+</span></p>
+<p class="p3"><span class="s4"><b>AtsCalibration</b></span><span class="s3"><b>.init(aServer)</b></span></p>
+<p class="p3"><span class="s3"><br>
+</span></p>
+<p class="p3"><span class="s3"><b>*initGui(num_units, aServer)</b></span></p>
+<p class="p3"><span class="s3"><br>
+</span></p>
+<p class="p3"><span class="s3">Interface for modular synthesizer calibration. Must be used in tandem with a digital audio interface that can send dc-coupled outfit.<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s3"><br>
+</span></p>
+<p class="p3"><span class="s3"><b>num_units</b> - </span><span class="s4">Number</span><span class="s3"> of modular synthesizer units to calibrate</span></p>
+<p class="p4"><span class="s5"><br>
+</span><span class="s3">/*</span></p>
+<p class="p5"><span class="s3">Example loading Expert Sleepers ES-8</span></p>
+<p class="p5"><span class="s3">*/</span></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p5"><span class="s3">(</span></p>
+<p class="p5"><span class="s3">//Define the number of inputs and outputs for the ES-8</span></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p5"><span class="s3">o = Server.local.options;</span></p>
+<p class="p5"><span class="s3">o.numOutputBusChannels = 8; // The next time it boots, this will take effect</span></p>
+<p class="p5"><span class="s3">o.numInputBusChannels = 4;</span></p>
+<p class="p5"><span class="s3">)</span></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p5"><span class="s3">(</span></p>
+<p class="p5"><span class="s3">//load the ES-8 Device</span></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p5"><span class="s3">o.device = "ES-8";</span></p>
+<p class="p5"><span class="s3">)</span></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p8"><span class="s6">( </span><span class="s3">//set memory size</span></p>
+<p class="p3"><span class="s4">Server</span><span class="s3">.local.options.memSize = 512*1024;</span></p>
+<p class="p3"><span class="s4">Server</span><span class="s3">.internal.options.memSize = 512*1024;</span></p>
+<p class="p3"><span class="s3">s.boot;</span></p>
+<p class="p3"><span class="s3">) <span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s3"><br>
+</span></p>
+<p class="p9"><span class="s3">c=</span><span class="s4">nil</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s6">c = </span><span class="s3">AtsCalibration</span><span class="s6">.init(s);</span></p>
+<p class="p9"><span class="s3">c.initGui(2, s);</span></p>
+<p class="p3"><span class="s3"><br>
+</span></p>
+<p class="p3"><span class="s3">// Plot calibration data</span></p>
+<p class="p9"><span class="s3">(</span></p>
+<p class="p11"><span class="s3">//[cv-data, freqs, amps]</span></p>
+<p class="p9"><span class="s3">~mydatapoints[1][1].asArray.plot;</span></p>
+<p class="p9"><span class="s3">[</span><span class="s7">"Min Freq:"</span><span class="s3">, ~mydatapoints[1][1].asArray.sort.first, </span><span class="s7">"Max Freq:"</span><span class="s3">, ~mydatapoints[1][1].asArray.sort.last];<span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="s3">)</span></p>
+</body>
+</html>

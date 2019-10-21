@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1561.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 21.0px; font: 13.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 21.0px; font: 18.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 22.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #0000bf; -webkit-text-stroke: #0000bf}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #bf0000; -webkit-text-stroke: #bf0000}
+    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #000000; -webkit-text-stroke: #000000}
+    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #0000bf; -webkit-text-stroke: #0000bf}
+    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Arial; color: #bf0000; -webkit-text-stroke: #bf0000}
+    span.s1 {font: 18.0px Helvetica; font-kerning: none; color: #0000bf; -webkit-text-stroke: 0px #0000bf}
+    span.s2 {font: 18.0px Helvetica; font-kerning: none}
+    span.s3 {font-kerning: none}
+    span.s4 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s5 {font-kerning: none; color: #000000}
+    span.s6 {font-kerning: none; color: #0000bf; -webkit-text-stroke: 0px #0000bf}
+    span.s7 {font-kerning: none; color: #007300; -webkit-text-stroke: 0px #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AtsCV</b></span><span class="s2"><b>CascdingHiLoNoise<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><span class="s3"><b>cascading high/lowpass modular synthesizer controller for ats residual data <span class="Apple-converted-space"> </span></b></span></p>
+<p class="p2"><span class="s3"></span><br></p>
+<p class="p3"><span class="s3"><b>AtsCVCascadingHiLoNoise</b></span><span class="s4"><b>.initSynths(aServer)</b></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3"><b>*loadFIles(ats_file_path, calibration_file_path).play<span class="Apple-converted-space"> </span></b></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3"><b>*create_buffers(aServer, lowpass_input_index, highpass_input_index)<span class="Apple-converted-space">  </span>- creates a ~buffers variable that stores a list of control voltage buffer pairs for frequency and amplitude to be sent analog modular oscillators and amplifiers</b></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3">lowpass_input_index, highpass_input_index - the location of the associated control voltage input in the calibration file</span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3"><b>*resynthesizeBuffers(~buffers, busList)<span class="Apple-converted-space">  </span>- sends partial data to modules and resynthesize partials</b></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3"><b>busList - list of associated freq and amp bus indexes</b></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3">busList format: [[lowpass_freqbus, lowpass_ampbus],[highpass_freqbus, highpass_ampbus]]</span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p4"><span class="s3">Interface for modular synthesizer calibration. Must be used in tandem with a digital audio interface that can send dc-coupled outputs.<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s5"><br>
+</span><span class="s3">/*</span></p>
+<p class="p6"><span class="s3">Example loading Expert Sleepers ES-8</span></p>
+<p class="p6"><span class="s3">*/</span></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3">(</span></p>
+<p class="p6"><span class="s3">//Define the number of inputs and outputs for the ES-8</span></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3">o = Server.local.options;</span></p>
+<p class="p6"><span class="s3">o.numOutputBusChannels = 8; // The next time it boots, this will take effect</span></p>
+<p class="p6"><span class="s3">o.numInputBusChannels = 4;</span></p>
+<p class="p6"><span class="s3">)</span></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3">(</span></p>
+<p class="p6"><span class="s3">//load the ES-8 Device</span></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3">o.device = "ES-8";</span></p>
+<p class="p6"><span class="s3">)</span></p>
+<p class="p8"><span class="s3"></span><br></p>
+<p class="p9"><span class="s4">( </span><span class="s3">//set memory size</span></p>
+<p class="p4"><span class="s6">Server</span><span class="s3">.local.options.memSize = 512*1024;</span></p>
+<p class="p4"><span class="s6">Server</span><span class="s3">.internal.options.memSize = 512*1024;</span></p>
+<p class="p4"><span class="s3">s.boot;</span></p>
+<p class="p4"><span class="s3">) <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+<p class="p10"><span class="s3">c=</span><span class="s6">nil</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s4">c = </span><span class="s3">AtsCVBandPassNoise</span><span class="s4">.init;</span></p>
+<p class="p10"><span class="s3">c.initSynths(s);</span></p>
+<p class="p10"><span class="s3">c.loadFiles("/Users/crt.ats", "/Users/Desktop/CV_List_Sun Apr<span class="Apple-converted-space">  </span>3 23:47:41 2016.sc").play;</span></p>
+<p class="p10"><span class="s3">c.create_buffers(s, 1, 0); //lowpass cv data is the second element stored in the calibration file, highpass is the first</span></p>
+<p class="p10"><span class="s3">~buffers.postcs;</span></p>
+<p class="p10"><span class="s3"><br>
+</span></p>
+<p class="p10"><span class="s3">//create a silent default state for the amplitude buses so that we can hear the amplitude control voltage</span></p>
+<p class="p10"><span class="s3">(</span></p>
+<p class="p11"><span class="s3">SynthDef</span><span class="s4">(</span><span class="s7">\help_PlayBuf_amp</span><span class="s4">, {</span><span class="s3">| out = 0, bufnum = 0 |</span></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s3">//amp output bus</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s6">Out</span><span class="s3">.ar(out,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s6">K2A</span><span class="s3">.ar(0.99.neg)</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>);</span></p>
+<p class="p10"><span class="s3">}).play(s, [</span><span class="s7">\out</span><span class="s3">, 2]);</span></p>
+<p class="p10"><span class="s3">)</span></p>
+<p class="p10"><span class="s3">(</span></p>
+<p class="p11"><span class="s3">SynthDef</span><span class="s4">(</span><span class="s7">\help_PlayBuf_amp</span><span class="s4">, {</span><span class="s3">| out = 0, bufnum = 0 |</span></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s3">//amp output bus</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s6">Out</span><span class="s3">.ar(out,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s6">K2A</span><span class="s3">.ar(0.99.neg)</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>);</span></p>
+<p class="p10"><span class="s3">}).play(s, [</span><span class="s7">\out</span><span class="s3">, 3]);</span></p>
+<p class="p10"><span class="s3">)</span></p>
+<p class="p10"><span class="s3"><br>
+</span></p>
+<p class="p10"><span class="s3">//Resynthesize partials</span></p>
+<p class="p10"><span class="s3"><br>
+</span></p>
+<p class="p10"><span class="s3">c.resynthesizeBuffers(~buffers, [[0,2], [1,3]]);<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s3"><br>
+</span></p>
+</body>
+</html>

@@ -10,7 +10,7 @@ s.options.numBuffers = 1024 * 16;
 //this is about 1GB, may vary based on RAM
 s.options.memSize=2.pow(21);
 2.pow(21).postln;
-2**16
+
 //boot server
 s.boot;
 
@@ -30,7 +30,6 @@ p=ProxySpace.push(s);
 p.makeTempoClock;
 //give proxyspace a tempo
 p.clock.tempo = 2;
-)
 
 
 // Korg nanoKontrol2
@@ -43,7 +42,6 @@ R1 stop mod1 & mod2, R2 nil, R3 p1, R4 p2, R5 p3, R6 p4, R7 p5, R8 p6
 
 ////////// SYNTHDEFS /////////////
 // 8 synths will appear for offsets
-(
 
 //microkontrol
 k = MKtl(\nk2, "*trol2");
@@ -117,7 +115,7 @@ pan = pan (stereo)
 atk = attack
 rel = release
 pos = position to start playback from 0 to 1
-*/
+
 SynthDef(\vplaym,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, atk=0.01, rel=1, pos=0;
 		var sig, env;
@@ -127,12 +125,13 @@ SynthDef(\vplaym,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
+*/
 
 // fft freeze
 ~freeze = SynthDef(\fftFreeze, {
     arg out = 0;
 	var in, chain;
-	in = SoundIn.ar(6);
+	in = SoundIn.ar(0);
 	chain = FFT({ LocalBuf(1024) }, in);
 	chain = PV_MagFreeze(chain, LFNoise0.kr([LFNoise0.kr(2).exprange(2,10), LFNoise0.kr(2).exprange(2,10)]));
 	Out.ar(out, Pan2.ar(IFFT(chain), 0, 0.3));// inverse FFT
@@ -270,11 +269,10 @@ k.elAt(\bt, \S, \7).action_({  |elem|
 		~mag.set(\out, 0);
 	}{   ~mag.free(3);}
 });
-)
+
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
-(
 // manual stop, but not offsets
 k.elAt(\tr, \stop).action_({  |elem|
     if(elem.value > 0)
@@ -295,13 +293,12 @@ k.elAt(\tr, \stop).action_({  |elem|
 ~vplaym.free;
 	} { }
 });
-)
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
 
 // Modular music interlude w buttons
-(
+
 // 01
 k.elAt(\bt, \R, \3).action_({  |elem|
     if(elem.value > 0)
@@ -395,11 +392,11 @@ k.elAt(\bt, \R, \1).action_({  |elem|
 		~mod2.set(\amp, Pseq((70..0) * 0.001,1).asStream, \dur, 0.001).quant(1);
 } { }
 });
-)
+
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
-(
+
 // Modular 2 osc slow morphing pitch and env w buttons
 k.elAt(\bt, \M, \1).action_({  |elem|
     if(elem.value > 0)
@@ -468,12 +465,12 @@ k.elAt(\bt, \M, \4).action_({  |elem|
 		~mod2.set(\note, Prand([1,10]++(23..47), inf).asStream, \dur, Pexprand(2.33, 6.79,inf).asStream * 0.01, \amp, Prand((15..89).mirror2, inf).asStream * 0.01,\octave, Pseq([-10]++(4..8),inf).asStream, \atk, Prand([1,5,9],inf).asStream * 0.0001, \sus, Prand([1,10,100],inf).asStream *0.003, \rel, Prand([1,5,9],inf).asStream *0.001, \port, Pexprand(2.33, 6.79,inf).asStream * 0.01 * 0.01).quant(1);
 	} { }
 });
-)
+
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
 // zerosc SUBotnick part
-(
+
 k.elAt(\bt, \M, \5).action_({  |elem|
     if(elem.value > 0)
 	{
@@ -503,18 +500,18 @@ k.elAt(\bt, \M, \5).action_({  |elem|
 	\dur, 1,
 	\note, 1,
 	\sus, 0.05,
-	\amp, Prand((-699..699) * 0.001,inf).asStream * Pseq((1..-1),inf).asStream,
+	\amp, Prand((-999..999) * 0.001,inf).asStream * Pseq((1..-1),inf).asStream,
 	\atk, 0.3
 	);
 
 	} {~mod3.free; ~mod4.free;}
 });
-)
+
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
 // noise bursts
-(
+
 k.elAt(\bt, \M, \6).action_({  |elem|
     if(elem.value > 0)
 	{

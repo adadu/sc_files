@@ -1,5 +1,17 @@
 /*
-It is not possible to boot a server on a remote machine, but if you have one running already or you know of one running, you can send messages to it. You create the server object using the IP address of the machine running the server and the port it is using.*/
+It is not possible to boot a server on a remote machine, but if you have one running already or you know of one running, you can send messages to it. You create the server object using the IP address of the machine running the server and the port it is using.
+
+
+// without the IDE you can always run sclang from the commandline
+
+$ sclang yourprogram.scd
+// boot the server by puting your code that you pass to sclang into:
+
+Server.default.waitForBoot {
+         (... your code ...)
+}
+
+*/
 s = Server.remote(\rpi, NetAddr("192.168.2.2", 57110,0));
 s.boot
 s.serverRunning
@@ -19,6 +31,12 @@ s.boot;
 
 s.sendMsg(\rpi, { [SinOsc.ar(440, 0, 0.2), SinOsc.ar(442, 0, 0.2)] }.play);
 
+a.set(\freq, [220, 330]);
+s.sendMsg(\rpi, {a.set(\freq, 220)});
+
+n = NetAddr(\rpi, 57110);
+n = s.addr;
+n.sendMsg(
 
 
 // All clear and quit

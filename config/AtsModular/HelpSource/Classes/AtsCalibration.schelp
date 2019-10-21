@@ -1,0 +1,50 @@
+title:: AtsCalibration
+summary:: Ats modular synthesizer calibration
+categories:: UGens > Analysis:Synthesis
+related:: Classes/AtsCV, Classes/AtsCVBandPassNoise, Classes/AtsCVCascadingHiLoNoise, Classes/AtsCalibration
+
+DESCRIPTION:: Interface for modular synthesizer calibration. Must be used in tandem with a digital audio interface that can send dc-coupled outfit.
+
+AtsCalibration.init(aServer)
+
+*initGui(num_units, aServer)
+
+num_units - Number of modular synthesizer units to calibrate
+
+EXAMPLES::
+
+code::
+/*
+Example loading Expert Sleepers ES-8
+*/
+
+(
+//Define the number of inputs and outputs for the ES-8
+o = Server.local.options;
+o.numOutputBusChannels = 8; // The next time it boots, this will take effect
+o.numInputBusChannels = 4;
+)
+
+(
+//load the ES-8 Device
+o.device = "ES-8";
+)
+
+( //set memory size
+Server.local.options.memSize = 512*1024;
+Server.internal.options.memSize = 512*1024;
+s.boot;
+)
+
+c=nil;
+c = AtsCalibration.init(s);
+c.initGui(2, s);
+
+// Plot calibration data
+(
+//[cv-data, freqs, amps]
+~mydatapoints[1][1].asArray.plot;
+["Min Freq:", ~mydatapoints[1][1].asArray.sort.first, "Max Freq:", ~mydatapoints[1][1].asArray.sort.last];
+)
+
+::

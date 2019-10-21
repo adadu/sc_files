@@ -31,9 +31,9 @@ p.clock.tempo = 2;
 //s.options.device= "Built-in Output";
 
 //rme fireface800
-s.options.device="Fireface 800 (3EC)";
-s.options.numInputBusChannels = 8;
-s.options.numOutputBusChannels = 8;
+//s.options.device="Fireface 800 (3EC)";
+//s.options.numInputBusChannels = 8;
+//s.options.numOutputBusChannels = 8;
 
 //Fireface w/ ADAT channel outs activated
 //s.options.numOutputBusChannels = 20;
@@ -60,7 +60,7 @@ s.options.numOutputBusChannels.postln;
 Task({
 	3.wait;
 	d = Dictionary.new;
-	d.add(\foldernames -> PathName(thisProcess.nowExecutingPath.dirname +/+ "../../../../samples/001set/").entries);
+	d.add(\foldernames -> PathName(thisProcess.nowExecutingPath.dirname +/+ "../../../../samples/001set/").entries); ///Users/draft/git/samples/001set/ ???
 	for (0, d[\foldernames].size-1,
 		{arg i; d.add(d[\foldernames][i].folderName -> d[\foldernames][i].entries.collect({
 			arg sf;
@@ -68,7 +68,7 @@ Task({
 		});
 	)});
 	// UNCOMMENT THIS FOR ANYTHING BUT CORM
-	// ("synthdefs.scd").loadRelative;
+	("synthdefs.scd").loadRelative;
 	//loads snippets from setup folder
 	//("Snippets.scd").loadRelative;
 	3.wait;

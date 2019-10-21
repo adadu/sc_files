@@ -23,7 +23,7 @@ rel = release
 pos = position to start playback from 0 to 1
 
 */
-(
+
 SynthDef(\vplaym,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, atk=0.01, rel=1, pos=0;
 		var sig, env;
@@ -33,7 +33,7 @@ SynthDef(\vplaym,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
-)
+
 /*
 
 vplay: enveloped stereo buffer player
@@ -53,7 +53,7 @@ rel = release
 pos = position to start playback from 0 to 1
 
 */
-(
+
 SynthDef(\vplay,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, atk=0.0, sus=1, rel= 0, pos=0;
 		var sig, env;
@@ -63,7 +63,7 @@ SynthDef(\vplay,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
-)
+
 /*
 
 wtabl: wavetable synth using looped buffers via PlayBuf
@@ -77,7 +77,7 @@ atk = attack
 rel = release
 
 */
-(
+
 SynthDef(\wtabl,
 	{arg out = 0, buf = 0, freq = 300, amp = 0.5, pan = 0, atk=0.01, rel=1;
 		var sig, env;
@@ -87,11 +87,11 @@ SynthDef(\wtabl,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
-)
+
 //SynthDef based on an overdriven DFM1 - this is very CPU intensive
 //Using resonance values of >1 only will sound the freq value and detune it.
 //good for stabs, but is buggy
-(
+
 SynthDef(\dfm1, {
 	arg out = 0, freq = 440,mul = 0.5, res = 1,type = 0, noise = 0.0003, atk = 0.01, rel = 1;
 	var sig, env;
@@ -100,7 +100,7 @@ SynthDef(\dfm1, {
 	sig = sig*env;
 	Out.ar(out,Splay.ar([sig]));
 }).add;
-)
+
 
 /*
 
@@ -118,7 +118,7 @@ pos = position of playback (usually not used)
 rel = release (usually not used, this is only really in case I accidentally play a sample backwards, and need the synth to free at some point in the future, or schedule very long samples to be played. This is a security measure in case I box my processor.)
 
 */
-(
+
 SynthDef(\bplay,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, pos = 0, rel=15;
 		var sig,env ;
@@ -128,7 +128,7 @@ SynthDef(\bplay,
 		sig = sig * amp;
 		Out.ar(out,Pan2.ar(sig,pan));
 }).add;
-)
+
 /*
 
 bplaym: basic mono buffer player
@@ -143,7 +143,7 @@ pos = position of playback (usually not used)
 rel = release (usually not used, this is only really in case I accidentally play a sample backwards, and need the synth to free at some point in the future, or schedule very long samples to be played. This is a security measure in case I box my processor.)
 
 */
-(
+
 SynthDef(\bplaym,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, pos = 0, rel=15;
 		var sig,env ;
@@ -153,7 +153,7 @@ SynthDef(\bplaym,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
-)
+
 /*
 
 bplaymr: basic reversed mono buffer player
@@ -169,7 +169,7 @@ rel = release (usually not used, this is only really in case I accidentally play
 
 */
 
-(
+
 SynthDef(\bplaymr,
 	{arg out = 0, buf = 0, rate = 1, amp = 0.5, pan = 0, pos = 0, rel=3;
 		var sig,env ;
@@ -179,7 +179,7 @@ SynthDef(\bplaymr,
 		sig = sig * amp;
 		Out.ar(out,sig);
 }).add;
-)
+
 /*
 
 lplay - a looping player for stereo samples that uses the dur value to automatically pitch samples for looping over a given number of beats. I built this to grab a bunch of drum loops and percussion loops at roughly the correct tempo and use them at the clock rate of my set.
@@ -192,7 +192,7 @@ rel = release (mostly here to prevent runaway PlayBufs)
 dur = duration, in beats, that you would like your sample scaled to. For example a sample played over 8 beats would have a dur of 8 specified. Note that this repitches the sample in order to scale it to the correct beat, so it could end up at a _very_ different pitch
 
 */
-(
+
 SynthDef(\lplay,
 	{arg out = 0, buf = 0, amp = 0.5, pan = 0, rel=15, dur = 8;
 		var sig,env ;
@@ -202,7 +202,7 @@ SynthDef(\lplay,
 		sig = sig * amp;
 		Out.ar(out,Pan2.ar(sig,pan));
 }).add;
-)
+
 /*
 
 bpfsaw: an instrument by Eli Fieldsteel as part of his SuperCollider tutorial series
@@ -231,7 +231,7 @@ out = channels out
 
 */
 
-(
+
 SynthDef(\bpfsaw, {
 	arg atk=2, sus=0, rel=3, ts=1, c1=1, c2=(-1), freq=500, detune=0.02, pan=0, cfhzmin=0.1, cfhzmax=0.3, cfmin=500, cfmax=2000, rqmin=0.1, rqmax=0.2, lsf=200, ldb=0, amp=1, out=0;
 	var sig, env;
@@ -249,7 +249,7 @@ SynthDef(\bpfsaw, {
 	sig = sig*env*amp;
 	Out.ar(out,sig);
 }).add;
-)
+
 
 /*
 
@@ -276,7 +276,7 @@ amp = volume
 */
 
 
-(
+
 SynthDef(\henon,
 	{arg freq=440,a=1.3,b=0.3,x0=0.30501993062401,x1=0.20938865431933,atk=0.01,sus=1,rel=1,ts=1,out=0,pan=0,amp=0.3;
 		var sig,env;
@@ -286,7 +286,7 @@ SynthDef(\henon,
 		sig = sig*env;
 		Out.ar(out,Pan2.ar(sig,pan));
 }).add;
-)
+
 
 /*
 
@@ -312,7 +312,7 @@ amp = volume
 
 */
 
-(
+
 SynthDef(\henonc,
 	{arg freq=440,a=1.3,b=0.3,x0=0.30501993062401,x1=0.20938865431933,atk=0.01,sus=1,rel=1,ts=1,out=0,pan=0,amp=0.3;
 		var sig,env;
@@ -320,7 +320,7 @@ SynthDef(\henonc,
 		sig = LeakDC.ar(sig);
 		Out.ar(out,Pan2.ar(sig,pan));
 }).add;
-)
+
 
 /*
 
@@ -345,14 +345,14 @@ amp = volume
 
 */
 
-(
+
 SynthDef(\warp1,
 	{arg buf=0, channels=2, pos=0, rate=1, size=0.2, env= -1, olap=8, rand=0, interp=4, poslag=0, ratelag=0, out=0, sizelag=0, pan=0, amp=0.5;
 		var sig;
 		sig = Warp1.ar(2,buf,Lag.kr(pos,poslag),Lag.kr(rate,ratelag),Lag.kr(size,sizelag),env,olap,rand,interp,1);
 		Out.ar(out,Pan2.ar(sig,pan,amp));
 }).add;
-)
+
 
 
 /*
@@ -378,7 +378,7 @@ out = channels out
 
 */
 
-(
+
 SynthDef(\bpfbuf, {
 	arg atk=0, sus=0, rel=3, c1=1, c2=(-1),
 	buf=0, rate=1, pos=0, freq=440, rq = 1,
@@ -391,7 +391,7 @@ SynthDef(\bpfbuf, {
 	sig = Pan2.ar(sig,pan,amp);
 	Out.ar(out,sig);
 }).add;
-)
+
 
 /*
 
@@ -409,7 +409,7 @@ pan = panning in stereo
 
 */
 
-(
+
 SynthDef(\sinfb, {
 	arg freq = 440, atk = 0.01, sus = 0, rel = 1, fb = 0, amp = 0.3, out = 0, pan=0;
 	var sig, env;
@@ -418,7 +418,7 @@ SynthDef(\sinfb, {
 	sig = sig*env;
 	Out.ar(out,Pan2.ar(sig,pan,amp));
 }).add;
-)
+
 
 /*
 
@@ -435,7 +435,7 @@ out = channels out
 
 */
 
-(
+
 SynthDef(\ring1,
 	{
 		arg f = 45, a = 9, d = 0.6, pan = 0, amp = 1, out = 0;
@@ -447,9 +447,9 @@ SynthDef(\ring1,
 		Out.ar(out,Pan2.ar(sig.tanh,pan) * amp)
 	};
 ).add;
-)
 
-(
+
+
 SynthDef(\ring2,
 	{
 		arg f = 9000, a = 2, d = 0.1, amp = 1, pan = 2, out = 0;
@@ -461,9 +461,9 @@ SynthDef(\ring2,
 		Out.ar(out,Pan2.ar(sig.tanh,pan) * amp)
 	};
 ).add;
-)
 
-(
+
+
 SynthDef(\ring3,
 	{
 		arg f = 50, a = 3, d = 1, pan = 0, amp = 1, out = 0;
@@ -475,9 +475,8 @@ SynthDef(\ring3,
 		Out.ar(out,Pan2.ar(sig.tanh,pan) * amp)
 	};
 ).add;
-)
 
-(
+
 SynthDef(\ring4,
 	{
 		arg f = 8000, a = 1, d = 0.3, pan = 0, amp = 1, out = 0;
@@ -489,7 +488,7 @@ SynthDef(\ring4,
 		Out.ar(out,Pan2.ar(sig.tanh,pan) * amp)
 	};
 ).add;
-)
+
 
 /*
 //this needs to be re-evaluated every time there is a note played - so it needs work.
@@ -535,7 +534,7 @@ taken from 2017mar17
 )
 
 */
-(
+
 SynthDef(\dc, { | note, octave = 0, deg = 12, midiCvOff  = -84, t_trig = 1, ch = nil, port = 0, calibration = 0.2202, offset = 0, amp = 0.01, ampCh = nil, aux = 0.0001, auxCh = nil, att = 0.01, aatt =0.01, dur = 0.1, dur2 = 0.1 |
 	var env = Env([0.001, 0.99, 0.001], [att, 1.0-att], [\lin, \lin]);
 	var envGen = EnvGen.kr(env, t_trig, timeScale: dur);
@@ -549,7 +548,7 @@ SynthDef(\dc, { | note, octave = 0, deg = 12, midiCvOff  = -84, t_trig = 1, ch =
 	Out.ar(ampCh, K2A.ar(Lag.kr(amp * envGen)));
 	Out.ar(auxCh, K2A.ar(Lag.kr(aux * auxEnvGen)));
 }).add;
-)
+
 
 /*
 mod2
@@ -574,7 +573,7 @@ taken from 2017oct28
 	\stretch, Pdefn(\v3stretch, 1.0),
 );
 */
-(
+
 SynthDef(\zero, { | note, octave = 0, spo = 12, t_trig, ch = nil, port = 0, calibration = 0.1, midiTune = 0, amp = 1,
 	ampCh = nil, att = 0.001, dur = 1 |
 	var level = amp;
@@ -586,11 +585,11 @@ SynthDef(\zero, { | note, octave = 0, spo = 12, t_trig, ch = nil, port = 0, cali
 	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
 	Out.ar(ampCh, K2A.ar(Lag.kr(envGen)));
 }).add;
-)
+
 
 //first mid 2019jun13, better
 //specify env asr, but relation to dur is not solved yet
-(
+
 SynthDef(\dcev, { | note, octave = 0, spo = 12, t_trig, atk=0, sus=0, rel=3, ch = nil, port = 0, calibration = 0.1, midiTune = 0, amp = 1,
 	ampCh = nil, att = 0.001, dur = 1 |
 	var level = amp;
@@ -602,6 +601,6 @@ SynthDef(\dcev, { | note, octave = 0, spo = 12, t_trig, atk=0, sus=0, rel=3, ch 
 	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
 	Out.ar(ampCh, K2A.ar(Lag.kr(envGen)));
 }).add;
-)
+
 
 )

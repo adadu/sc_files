@@ -9,20 +9,22 @@ s.quit;
 s.options.numBuffers = 1024 * 16;
 //this is about 1GB, may vary based on RAM
 s.options.memSize=2.pow(21);
-2.pow(21).postln;
-2**16
+
 //boot server
 s.boot;
 
-// CORM macOS aggregate Audient iD4 + USBStreamer
-s.options.device = "CORM";
-s.options.outputStreamsEnabled = "1111111111";
-s.options.numInputBusChannels = 2;
-s.options.numOutputBusChannels = 10;
-"INs".postln;
-s.options.numInputBusChannels.postln;
-"OUTs".postln;
-s.options.numOutputBusChannels.postln;
+///////////////// RME Fireface 800 (which has ADAT out for ES-3)
+s.options.device="Fireface 800 (3EC)";
+///////////////// Fireface w/ 8 ANALOG INS activated
+s.options.numInputBusChannels = 8;
+s.options.outputStreamsEnabled = "11111111";
+///////////////// Fireface w/ ADAT OUTS activated
+///////////////// 0-9=ANALOG 1-10
+///////////////// 10-11=SPDIF 1-2(11-12)
+///////////////// 12-19=ADAT OUT 1-8(13-20)
+s.options.numOutputBusChannels = 19;
+//////////////disable SPDIF outputs
+s.options.outputStreamsEnabled = "1111111111";//0011111111";
 
 //start proxyspace
 p=ProxySpace.push(s);
@@ -48,50 +50,19 @@ R1 stop mod1 & mod2, R2 nil, R3 p1, R4 p2, R5 p3, R6 p4, R7 p5, R8 p6
 //microkontrol
 k = MKtl(\nk2, "*trol2");
 
-//offset synthdef
-SynthDef(\offset0, { arg ch = nil, offset = -1;
-	Out.ar(ch, K2A.ar(offset));
-}).add;
-
-// offsets for es3
-~ch02 = Pmono(\offset0, \ch, 2, \offset, Pdefn(\ch10off, -0.0001));              // -0.0001
-~ch03 = Pmono(\offset0, \ch, 3, \offset, Pdefn(\ch11off, 0.00169));             //  0.00169
-~ch04 = Pmono(\offset0, \ch, 4, \offset, Pdefn(\ch12off, -0.0034));            // -0.0035
-~ch05 = Pmono(\offset0, \ch, 5, \offset, Pdefn(\ch13off, -0.0002));           // -0.0002
-~ch06 = Pmono(\offset0, \ch, 6, \offset, Pdefn(\ch14off, 0));                // 0
-~ch07 = Pmono(\offset0, \ch, 7, \offset, Pdefn(\ch15off, 0.0001));          // 0.0001
-~ch08 = Pmono(\offset0, \ch, 8, \offset, Pdefn(\ch16off, -0.0001));        // -0.0001
-~ch09 = Pmono(\offset0, \ch, 9, \offset,Pdefn(\ch17off, -0.0018));        // -0.0018
-
-SynthDef(\dcev, { | note=60, octave = 0, stepsPerOctave = 12, t_trig, atk=0, sus=0, rel=3, ch = nil, port = 0, calibration = 0.1, midiTune = 0, amp = 1, ampCh = nil, dur = 1 |
-	var level = amp;
-	var env = Env([0, 1, 1, 0], [atk, sus, rel], [\lin, \lin, \lin]);
-	var envGen = EnvGen.kr(env, t_trig, level, timeScale: dur);
-	note = note;
-	note = note + (octave * stepsPerOctave) + midiTune;
-	note = (note / stepsPerOctave) * calibration;
-	Out.ar(ch, K2A.ar(Lag.kr(note, port)));
-	Out.ar(ampCh, K2A.ar(Lag.kr(envGen)));
-}).add;
-// free synths so they don't start until triggered
-//~dc.free;
-
 // sc virtual osc
-SynthDef(\sinOut, { | freq = 440, t_trig, ch = nil, atk=0, sus=0, rel=3, amp = 0.5, ampCh = nil, dur = 1, octave = 0, stepsPerOctave = 12 |
+SynthDef(\sinOut, { | freq=440, t_trig, ch=1, atk=0, sus=0, rel=3, amp=0.4, dur=1, /*octave, stepsPerOctave, */port=0, ffreq=2000, res=0.1 |
 	var level = amp;
 	var env = Env([0, 1, 1, 0], [atk, sus, rel], [\lin, \lin, \lin]);
 	var envGen = EnvGen.kr(env, t_trig, level, timeScale: dur);
-	var sig = SinOsc.ar(freq, 0, 1, 0);
-	freq = freq + (octave * stepsPerOctave);
-	freq = freq / stepsPerOctave;
+	var sig = /*SawDPW*/LFSaw.ar(Lag.kr(freq, port), 0, 1, 0);
+	sig = MoogVCF.ar(sig, ffreq, res);
 	Out.ar(ch, sig * envGen);
-	//Amp for audio rate modulation
-	//Out.ar(ampCh, K2A.ar(Lag.kr(amp * envGen)));
 }).add;
 
 
 // sc virtual osc
-SynthDef(\noiseOut, { | freq = 440, t_trig, ch = nil, atk=0, sus=0, rel=3, amp = 0.5, ampCh = nil, dur = 1, octave = 0, stepsPerOctave = 12 |
+SynthDef(\noiseOut, { | freq = 440, t_trig, ch = nil, atk=0, sus=0, rel=3, amp = 0.5, /*ampCh = nil, */dur = 1, octave = 0, stepsPerOctave = 12 |
 	var level = amp;
 	var env = Env([0, 1, 1, 0], [atk, sus, rel], [\lin, \lin, \lin]);
 	var envGen = EnvGen.kr(env, t_trig, level, timeScale: dur);
@@ -102,7 +73,6 @@ SynthDef(\noiseOut, { | freq = 440, t_trig, ch = nil, atk=0, sus=0, rel=3, amp =
 	//Amp for audio rate modulation
 	//Out.ar(ampCh, K2A.ar(Lag.kr(amp * envGen)));
 }).add;
-
 
 /*
 vplaym: enveloped mono buffer player
@@ -132,7 +102,7 @@ SynthDef(\vplaym,
 ~freeze = SynthDef(\fftFreeze, {
     arg out = 0;
 	var in, chain;
-	in = SoundIn.ar(6);
+	in = SoundIn.ar(0);
 	chain = FFT({ LocalBuf(1024) }, in);
 	chain = PV_MagFreeze(chain, LFNoise0.kr([LFNoise0.kr(2).exprange(2,10), LFNoise0.kr(2).exprange(2,10)]));
 	Out.ar(out, Pan2.ar(IFFT(chain), 0, 0.3));// inverse FFT
@@ -306,21 +276,17 @@ k.elAt(\tr, \stop).action_({  |elem|
 k.elAt(\bt, \R, \3).action_({  |elem|
     if(elem.value > 0)
 	{
-	~mod1 = Pmono(\dcev,
-	\ch,6,
-	\ampCh,2,
+	~mod1 = Pmono(\sinOut,
+	\ch,1,
 	\trig, 1,
 	\note, Pseq([30,30].mirror1,inf).asStream,
 	\dur, Pbjorklund2(Pseq((2..16),inf),16,inf,0).asStream/4,
 	\atk, 0.001,
 	\sus, 0.05,
 	\rel, 0.4,
-	\calibration, 0.0967, //0.0074, 0.10255,
-	\midiTune, -24,
-	\stepsPerOctave, 12,
 	\amp, 0.5,
 	\port, 0,
-	\octave, 0);
+);
 
 	~mod1.set(\note, Pseq([30,30],inf).asStream, \dur, Pbjorklund2(Pseq((2..16),inf),16,inf,0).asStream/4, \amp, 0.5, \port, 0, \octave, 0, \atk, 0.001,\sus, 0.05, \rel, 0.4).quant(1);
 	}{   }
@@ -356,9 +322,8 @@ k.elAt(\bt, \R, \7).action_({  |elem|
 	{
 ~mod1.set(\note, Pseq([30,33,45,25],inf).asStream, \dur, Pbjorklund2(Pseq((2..16),inf),16,inf,0).asStream/4, \amp, Pseq((70..99) *0.01, inf).asStream, \port, Pseq([0,1,3],inf).asStream, \octave, 0).quant(1);
 (
-~mod2 =	Pmono(\dcev,
-	\ch,7,
-	\ampCh,3,
+~mod2 =	Pmono(\sinOut,
+	\ch,2,
 	\trig, 1,
 	\note, Pseq([30,30],inf),
 	\dur, 0.1,
@@ -366,8 +331,8 @@ k.elAt(\bt, \R, \7).action_({  |elem|
 	\atk, 0.001,
 	\sus, 0.05,
 	\rel, 0.4,
-	\calibration, 0.09773, //0.0967
-	\midiTune, -24,
+	//\calibration, 0.09773, //0.0967
+	//\midiTune, -24,
 	\stepsPerOctave, 12,
 	\octave, 0,
 	\port, 0,
@@ -396,6 +361,15 @@ k.elAt(\bt, \R, \1).action_({  |elem|
 } { }
 });
 )
+
+//experiment w psrp
+~mod1.set(\note, (Psrp(Pseq([30,33,45,25],inf),0.3).linlin(-1.0,1.0,25,45)).asStream, \ffreq, 2450, \res, 0.3);
+~mod2.set(\ffreq, 1200, \res, 0.5, \rel, 0.4, \octave, Pseq((0..3),inf).asStream);
+
+// ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
+
+
+
 
 // ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®  ƒ∆§†∑®
 
@@ -478,8 +452,8 @@ k.elAt(\bt, \M, \5).action_({  |elem|
     if(elem.value > 0)
 	{
 ~mod3 =	Pmono(\dcev,
-	\ch,8,
-	\ampCh,4,
+			\ch,[1,2],
+
 	\trig, 1,
 	\note, Pseq([30,30],inf),
 	\dur, 0.1,

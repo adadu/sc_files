@@ -1,6 +1,7 @@
 //Load setup file to get examples working
 ("setup.scd").loadRelative;
 
+s.quit
 //RECORD
 s.record(duration: 20);
 s.stopRecording;
@@ -48,7 +49,7 @@ a.free
 //snare running forwards and back
 (
 p.clock.tempo = 150/60;
-~sn = Pbind(\instrument,\bplay,\buf,d["sn"][7],\dur,Pbjorklund2(Pexprand(1,4).round(1),32,inf,Pwhite(1,4).asStream)/64,\amp, Pexprand(0.16, 0.99, inf), \rate, 1/*Pexprand(0.83, 11.53,inf)*/, \pan, Pbjorklund2(Pexprand(8,16).round(1),16,inf,Pwhite(1,5).asStream)/2 * Prand((-1..1),inf));
+~sn = Pbind(\instrument,\bplay,\buf,d["sn"][3],\dur,Pbjorklund2(Pexprand(1,4).round(1),32,inf,Pwhite(1,4).asStream)/64,\amp, Pexprand(0.16, 0.99, inf), \rate, 1/*Pexprand(0.83, 11.53,inf)*/, \pan, Pbjorklund2(Pexprand(8,16).round(1),16,inf,Pwhite(1,5).asStream)/2 * Prand((-1..1),inf));
 )
 
 ~sn.free;
