@@ -134,7 +134,7 @@ Tuning.directory
 
 //sending MIDI notes to MKS-70
 (
-~mk1 = Pbind(\type, \midi, \midicmd, \noteOn, \midiout, d[\m2], \scale, Scale.major(\sruti), \degree, Prand((23..37),inf), /* Pseq([Prand((1..16), inf,5), Prand((1..16), inf,7), Prand((1..16), inf,3), Prand((1..16), inf,2)], inf),*/ \dur, Pbjorklund2(Pexprand(2,8).round(1),16,inf,Pwhite(2,4).asStream)/8,\amp,Pexprand (0.8, 0.99, inf), \octave, 2);
+~mk1 = Pbind(\type, \midi, \midicmd, \noteOn, \midiout, d[\m7], \scale, Scale.major(\sruti), \degree, Prand((23..37),inf), /* Pseq([Prand((1..16), inf,5), Prand((1..16), inf,7), Prand((1..16), inf,3), Prand((1..16), inf,2)], inf),*/ \dur, Pbjorklund2(Pexprand(2,8).round(1),16,inf,Pwhite(2,4).asStream)/8,\amp,Pexprand (0.8, 0.99, inf), \octave, 2);
 ~mk1.play;
 )
 ~mk1.free
@@ -153,7 +153,7 @@ Tuning.directory
 ~sysExArray = Pbind(
     \type, \midi,
     \midicmd, \sysex,
-	\midiout, d[\m2],
+	\midiout, d[\m7],
 	\array, Ptuple([0xf0, 0x41, 0x36, 0x00, 0x24, 0x20, 0x01,
 		0x36, Prand((0..80), inf), //env2 sus param, value
 		0x37, Prand((0..60), inf), //env2 rel param, value

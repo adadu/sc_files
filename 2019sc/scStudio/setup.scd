@@ -93,6 +93,8 @@ Task({
 	//d[\m5] = MIDIOut.newByName("MIDI Express XT", "Port 6").latency = (0.200);
 	//d[\m6] = MIDIOut.newByName("MIDI Express XT", "Port 7").latency = (0.200);
 	//d[\m7] = MIDIOut.newByName("MIDI Express XT", "Port 8").latency = (0.200);
+	d[\m7] = MIDIOut.newByName("MIDIPort32", "Port 1").latency = (0.200);
+
 	//test w MIDI monitor - for working at work
 	//d[\m8] = MIDIOut.newByName("MIDI Monitor (scMIDImonitor)", "MIDI Monitor (scMIDImonitor)").latency = (0.200);
 	//set input does n't work
