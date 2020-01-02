@@ -12,7 +12,10 @@ Quarks.install("https://github.com/supercollider-quarks/BatLib");
 Quarks.install("https://github.com/supercollider-quarks/LinuxExternal.git");
 Quarks.install("https://github.com/supercollider-quarks/Laptop.git");
 //senseworld not installing, also webpage not loading http://sensestage.hexagram.ca/
-Quarks.install("https://github.com/supercollider-quarks/autogui");
 Quarks.install("https://github.com/supercollider-quarks/JoshMisc");
+Quarks.install("https://github.com/ambisonictoolkit/atk-sc3.git");
+//ATK Installation kernel matrices sounds (rename sounds to sounds)
+//-> /home/jason/.local/share/ATK/sounds
 
 //add ATS modular?
+
