@@ -19,3 +19,11 @@ Quarks.install("https://github.com/ambisonictoolkit/atk-sc3.git");
 
 //add ATS modular?
 
+//iem vst multiencoder dashboard
+Quarks.install("https://github.com/madskjeldgaard/multiencoderdashboard")
+
+
+// network collab platform
+Quarks.install("https://github.com/aiberlin/HyperDisCo")
+// visual synth
+Quarks.install("https://github.com/ScintillatorSynth/Scintillator")
