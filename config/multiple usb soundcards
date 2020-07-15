@@ -1,0 +1,53 @@
+save .jackdrc into home
+
+// query jackdmp or jackd which is jack 2
+jackd 1.9.12
+
+alsa_in -j "id4-IN" -dhw:2 -p256 -n2 -r48000
+
+alsa_out -j "id4-OUT" -dhw:2 -p256 -n2 -r48000
+
+./sclang -a -l sclang.yaml
+
+
+// https://jackaudio.org/faq/multiple_devices.html
+// multiple sound cards
+// ~/.asoundrc
+
+// merge iD4 & usbstreamer
+pcm.merge {
+    type multi;
+    slaves.a.pcm hw:USBStreamer
+    slaves.a.channels 8;
+    slaves.b.pcm hw:iD4
+    slaves.b.channels 4;
+    bindings.0.slave a;
+    bindings.0.channel 0;
+    bindings.1.slave a;
+    bindings.1.channel 1;
+    bindings.2.slave a;
+    bindings.2.channel 2;
+    bindings.3.slave a;
+    bindings.3.channel 3;
+    bindings.4.slave a;
+    bindings.4.channel 4;
+    bindings.5.slave a;
+    bindings.5.channel 5;
+    bindings.6.slave a;
+    bindings.6.channel 6;
+    bindings.7.slave a;
+    bindings.7.channel 7;
+    bindings.8.slave b;
+    bindings.8.channel 0;
+    bindings.9.slave b;
+    bindings.9.channel 1;
+    bindings.10.slave b;
+    bindings.10.channel 2;
+    bindings.11.slave b;
+    bindings.11.channel 3;
+}
+
+ctl.merge {
+    type hw
+    card 0
+}

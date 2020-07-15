@@ -1,0 +1,11 @@
+MIDIClient.init
+MIDIClient.sources
+MIDIClient.list
+MIDIClient.externalSources
+MIDIClient.destinations
+MIDIClient.externalDestinations
+MIDIClient.myinports
+MIDIClient.myoutports
+MIDIClient.getClientID
+MIDIClient.restart
+MIDIClient.disposeClient
