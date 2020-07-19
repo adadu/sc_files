@@ -12,6 +12,7 @@
 s.options.numBuffers = 1024 * 16;
 //this is about 1GB, may vary based on RAM
 s.options.memSize=2.pow(20);
+2.pow(20).postln
 //boot the server
 s.boot;
 
