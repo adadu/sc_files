@@ -4,14 +4,28 @@ s.quit
 
 (
 s.quit;
+// 01 --- motu 10 channel out setup
+s.options.device = "MOTU 828mk2";
+s.options.numOutputBusChannels = 10;
+s.options.outputStreamsEnabled = "1111111111";
+s.options.numOutputBusChannels.postln;
+s.boot;
+//midi
+MIDIClient.init;
+MIDIClient.destinations;
+)
+
+(
+s.quit;
 //set number of inputs and outputs
 s.options.numInputBusChannels= 2;
 s.options.numOutputBusChannels= 2;
 //increase memory
 s.options.memSize = 32786;
 // for iD4
-"SC_JACK_DEFAULT_INPUTS".setenv("system:capture_1,system:capture_2");
-"SC_JACK_DEFAULT_OUTPUTS".setenv("system:playback_1,system:playback_2");
+//"SC_JACK_DEFAULT_INPUTS".setenv("system:capture_1,system:capture_2");
+//"SC_JACK_DEFAULT_OUTPUTS".setenv("system:playback_1,system:playback_2");
+
 s.boot;
 )
 
