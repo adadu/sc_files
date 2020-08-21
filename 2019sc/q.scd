@@ -11,6 +11,7 @@ Quarks.install("https://github.com/jamshark70/ddwSnippets.git");
 Quarks.install("https://github.com/supercollider-quarks/BatLib");
 Quarks.install("https://github.com/supercollider-quarks/LinuxExternal.git");
 Quarks.install("https://github.com/supercollider-quarks/Laptop.git");
+Quarks.install("https://github.com/musikinformatik/WavesetsEvent")
 //senseworld not installing, also webpage not loading http://sensestage.hexagram.ca/
 Quarks.install("https://github.com/supercollider-quarks/JoshMisc");
 Quarks.install("https://github.com/ambisonictoolkit/atk-sc3.git");
