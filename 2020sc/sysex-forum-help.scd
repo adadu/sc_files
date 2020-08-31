@@ -17,6 +17,7 @@ MIDIClient.init;
 MIDIClient.destinations;
 )
 
+//macOS MIDI Monitor for viewing output (open first
 ~t = MIDIOut.newByName("MIDI Monitor (Untitled)","MIDI Monitor (Untitled)");
 
 ~m = MIDIOut.newByName("MIDI Express XT", "Port 2");
@@ -110,7 +111,7 @@ MIDIClient.destinations;
 	var p;
 	var msbVal = val+48;
 	p=case
-		{msbVal == 0}	{7F, msbVal}
+		//{msbVal == 0}	{7F, msbVal}
 		{msbVal < 58}	{msbVal}
 		{msbVal < 68}	{[49,msbVal-10]}
 		{msbVal < 78}	{[50,msbVal-20]}
@@ -128,15 +129,11 @@ MIDIClient.destinations;
 		{msbVal < 178}	{[60,msbVal-90]};
 		*/
 
-	/*if (val.notNil) {
-		//if (msbVal < 58, {p}, {p.flat});
-			if (msbVal < 58, {p}, {p.join(", ")});
-	};*/
+	if (val.notNil) {
+		p;
+	};
 };
 )
-
-~msb.(99);
-// test. 0-9 returns single number. 10-99 returns two values.
 
 (
 ~sysExArrayB = Pbind(
