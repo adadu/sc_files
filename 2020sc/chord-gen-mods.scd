@@ -168,7 +168,7 @@ Ndef(\polySaw, Pbind(\instrument, \iter,
 	\dur, Pseq([Pgeom(0.07, 1.01, 30)],inf) * 1,
 	//\dur, Pseq([1,2,3,4,1,1,2,1] * 0.1, inf), //Pgeom(0.07, 1.01, inf),
 	\swm, Pexpodec(20,inf) + 0.01,//Phprand(0.79, 0.95, inf), //
-	\octave,Pseq((4..4),inf),
+	\octave,Pseq((2..4),inf),
 	\strum,0.01,
 	//\numHarm, 6,
 	//\harmonics, 7
@@ -192,7 +192,7 @@ Ndef(\polySaw, Pbind(\instrument, \iter,
 	\dur, Pseq([Pgeom(0.07, 1.01, 75) * Pgeom(0.07, 1.01, 1) * Pwhite(1,10)], inf),
 	\swm, Phprand(0.49, 1.0, inf), //Pexpodec(50,inf) + 0.01,
 	\octave,Pseq((2..4),inf),
-	\strum,Pseq((5..25).mirror1*0.01,inf) * 5
+	\strum,Pseq((5..25).mirror1*0.01,inf) * 2
 ));
 )
 
@@ -233,21 +233,21 @@ Ndef(\polySaw, Pbind(\instrument, \iter,
 		~triads[10.rand]+~triads[10.rand]+~triads[10.rand]+~triads[10.rand],
 		~triads[10.rand]+~triads[10.rand]+~triads[10.rand]+~triads[10.rand],
 		~triads[10.rand]+~triads[10.rand]+~triads[10.rand]+~triads[10.rand]],inf),
-	\detune, Pkey(\degree)/*~triads[10.rand]+~triads[10.rand]+~triads[10.rand]+~triads[10.rand]*/ * Pseq((1433..1463),inf).stutter(10), //multiply hard super fm nearing additive
+	\detune, Pkey(\degree)/*~triads[10.rand]+~triads[10.rand]+~triads[10.rand]+~triads[10.rand]*/ * Pseq((1433..1463),inf).stutter(10) * 0.5, //multiply hard super fm nearing additive
 	\attack, Pkey(\dur) * Pwhite(0.99,8,inf),//0.01,// Prand((1..10) * 0.001,inf),
 	\release,Pkey(\dur) * 7,//Pseq([1.3,0.2],inf) *4,//Prand((10..20) * 0.1,inf),
 	\amp, 0.7,
 	\scale, Scale.minor, //Scale.diminished, //, Scale.major],inf), //Scale.dorian, Scale.mixolydian, Scale.locrian, Scale.lydianMinor,
 	\tuning, Tuning.pythagorean, //Tuning.mean6,
 	//\dur, Pseq([3,0.3],inf) * 0.03,
-	\dur, Pseq([Pgeom(0.07, 1.01, 60)].mirror,inf) * Pexprand(0.01,0.5,inf) * 4,
+	\dur, Pseq([Pgeom(0.07, 1.01, 60)].mirror,inf) * Pexprand(0.01,0.5,inf) * 3,
 	//\dur, Pexpodec(100,inf) + 0.1,
 	//\dur, Pseq([1,2,3,4,1,1,2,1] * 0.5, inf),
 	\swm, Pwhite(0.11, 0.99, inf), //0.93, //Pexpodec(100,inf) + 0.01,//Phprand(0.39, 1.0, inf),
-	\octave,-10,//Pseq((-5..-5),inf),
+	\octave,-8,//Pseq((-5..-5),inf),
 	//\strum,Pseq((1..10) * 0.1, inf), //separate chords
-	\numHarm, 2,//add harmonics or choose?
-	\harmonics,1,
+	\numHarm, 0,//add harmonics or choose?
+	\harmonics,0,
 	//\legato,0.4
 ));
 )

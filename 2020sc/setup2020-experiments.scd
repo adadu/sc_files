@@ -91,8 +91,9 @@ Task({
 
 	//MIDI
 	// list midi sources
-	MIDIClient.sources;
 	MIDIClient.init;
+	MIDIClient.sources;
+
 	5.wait;
 	//modified to work w MKS-70 via MIDI Express XT, but fuck w latency
 	//set latency to 0 on linux w ALSA, was 0.200 on macOS
@@ -100,12 +101,14 @@ Task({
 	//////////////// LINUX MIDI ////////////////////
 	//remove comments for use
 	//BCR 2000
+	d[\m] = MIDIOut.newByName("MIDI 8x8", "MIDI 8x8 MIDI 1").latency = 0; // (0.2555);
+
 	//d[\m] = MIDIOut.newByName("MTPAV on parallel port", "MTP direct 1").latency = (0.2555);
 	//WS a/d
 	//d[\m1] = MIDIOut.newByName("MTPAV on parallel port", "MTP direct 2").latency = (0.2555);
 	//MKS-70
 	//d[\m3] = MIDIOut.newByName("MTPAV on parallel port", "MTP direct 3").latency = 0; //(0.2555);
-	d[\m4] = MIDIOut.newByName("Fireface800", "Fireface800 MIDI 1").latency = 0; //(0.2555);
+	//d[\m4] = MIDIOut.newByName("Fireface800", "Fireface800 MIDI 1").latency = 0; //(0.2555);
 
 	    //d[\m5] = MIDIOut.newByName("Virtual Raw MIDI 3-0", "VirMIDI 3-0").latency = 0; //(0.2555);
 		//d[\m6] = MIDIOut.newByName("Virtual Raw MIDI 3-1", "VirMIDI 3-1").latency = 0; //(0.2555);

@@ -27,3 +27,9 @@ Quarks.install("https://github.com/madskjeldgaard/multiencoderdashboard")
 Quarks.install("https://github.com/aiberlin/HyperDisCo")
 // visual synth
 Quarks.install("https://github.com/ScintillatorSynth/Scintillator")
+
+Quarks.uninstall("https://github.com/jamshark70/ddwSnippets.git");
+Quarks.uninstall("https://github.com/jamshark70/ddwSnippets.git");
+
+// 14bit midi class file gist
+// https://gist.github.com/carltesta/bb5065a7b92bab7673237e9cc1c9a612
